@@ -1,7 +1,7 @@
 import time, json
 # from dms2dec.dms_convert import dms2dec
-file_to_open = "lfmn.txt"
-output_filename = "lfmn.json"
+file_to_open = "lfpg.txt"
+output_filename = "lfpg.json"
 
 def main(file_to_open):
   data = []
@@ -36,6 +36,7 @@ def parser(filtered):
   schengen = False
   companies = []
   usage = []
+  wtc = []
   for d in filtered:
     if d[:5] == "STAND":
       lat = dms2decimal(d.split(':')[3])
@@ -47,6 +48,8 @@ def parser(filtered):
       companies = d.split(':')[1].split(',')
     if d[:3] == "USE":
       usage = list(d.split(':')[1])
+    if (d[:3]) == "WTC":
+      wtc = list(d.split(':')[1])
   
   final = {
     "lat": lat,
@@ -54,7 +57,8 @@ def parser(filtered):
     "number": stand_number,
     "schengen": schengen,
     "companies": companies,
-    "usage": usage
+    "usage": usage,
+    "wtc": wtc
   }
   return final
 
