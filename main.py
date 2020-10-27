@@ -1,4 +1,4 @@
-
+import time
 file_to_open = "lfpg.txt"
 
 def main(file_to_open):
@@ -9,7 +9,7 @@ def main(file_to_open):
       if line:
         data.append(line)
     file.close()
-  main_loop(data)
+  return main_loop(data)
 
 def main_loop(data):
   # This function takes the raw stripped lines of the file and parses them
@@ -19,17 +19,45 @@ def main_loop(data):
   for idx, val in enumerate(data):
     if val[:5] == "STAND":
       if not len(filtered) == 0:
-        print(f"NEW DATA!")
-        print(filtered)
-        print(f"\n")
-        parser(filtered)
+        final_Data = parser(filtered)
+        stands.append(final_Data)
         filtered = []
       starting_index = idx
       filtered.append(val)
     elif not val[:2] == "//":
       filtered.append(val)
   
+  return stands
+  
 def parser(filtered):
-  pass
+  schengen = False
+  companies = []
+  usage = []
+  for d in filtered:
+    if d[:5] == "STAND":
+      lat = d.split(':')[3]
+      lon = d.split(':')[4]
+      stand_number = d.split(':')[2]
+    if d == "SCHENGEN":
+      schengen = True
+    if d[:5] == "CALLS":
+      companies = d.split(':')[1].split(',')
+    if d[:3] == "USE":
+      usage = list(d.split(':')[1])
+  
+  final = {
+    "lat": lat,
+    "lon": lon,
+    "number": stand_number,
+    "schengen": schengen,
+    "companies": companies,
+    "usage": usage
+  }
+  return final
 
-main(file_to_open)
+ts = time.time()
+result = main(file_to_open)
+for r in result:
+  print(r)
+te = time.time()
+print(f"Lapse: {te-ts}")
