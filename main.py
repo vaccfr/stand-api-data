@@ -1,6 +1,7 @@
 import time, json
 # from dms2dec.dms_convert import dms2dec
-file_to_open = "lfpg.txt"
+file_to_open = "lfmn.txt"
+output_filename = "lfmn.json"
 
 def main(file_to_open):
   data = []
@@ -70,7 +71,7 @@ def dms2decimal(coord):
 
 ts = time.time()
 result = main(file_to_open)
-with open("lfpg.json", "w") as file:
+with open(output_filename, "w") as file:
   print(result, file=file)
   file.close()
 te = time.time()
