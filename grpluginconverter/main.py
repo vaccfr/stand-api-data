@@ -41,6 +41,8 @@ def parser(filtered):
     if d[:5] == "STAND":
       lat = dms2decimal(d.split(':')[3])
       lon = dms2decimal(d.split(':')[4])
+      dmslat = d.split(':')[3]
+      dmslon = d.split(':')[4]
       stand_number = d.split(':')[2]
     if d == "SCHENGEN":
       schengen = True
@@ -54,6 +56,8 @@ def parser(filtered):
   final = {
     "lat": lat,
     "lon": lon,
+    "dmslat": dmslat,
+    "dmslon": dmslon,
     "number": stand_number,
     "schengen": schengen,
     "companies": companies,
