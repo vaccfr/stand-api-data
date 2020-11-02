@@ -3,6 +3,8 @@ import time, json
 file_to_open = "lfpg.txt"
 output_filename = "lfpg.json"
 
+wake_turbulences = ['L', 'M', 'H', 'J']
+
 def main(file_to_open):
   data = []
   with open(file_to_open, 'r') as file:
@@ -37,6 +39,7 @@ def parser(filtered):
   companies = []
   usage = []
   wtc = []
+  notwtc = []
   priority = 1
   for d in filtered:
     if d[:5] == "STAND":
@@ -52,7 +55,17 @@ def parser(filtered):
     if d[:3] == "USE":
       usage = list(d.split(':')[1])
     if d[:3] == "WTC":
-      wtc = list(d.split(':')[1])
+      if len(wtc) == 0:
+        wtc = list(d.split(':')[1])
+      else:
+        for c in list(d.split(':')[1]):
+          if not c in wtc:
+            wtc.append(c)
+    if d[:5] == "NOTWT":
+      notwtc = list(d.split(':')[1])
+      for c in wake_turbulences:
+        if not c in notwtc:
+          wtc.append(c)
     if d[:5] == "PRIOR":
       if d.split(':')[1] == "+1":
         priority = 3
