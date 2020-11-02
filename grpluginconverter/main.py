@@ -37,6 +37,7 @@ def parser(filtered):
   companies = []
   usage = []
   wtc = []
+  priority = 1
   for d in filtered:
     if d[:5] == "STAND":
       lat = dms2decimal(d.split(':')[3])
@@ -50,8 +51,15 @@ def parser(filtered):
       companies = d.split(':')[1].split(',')
     if d[:3] == "USE":
       usage = list(d.split(':')[1])
-    if (d[:3]) == "WTC":
+    if d[:3] == "WTC":
       wtc = list(d.split(':')[1])
+    if d[:5] == "PRIOR":
+      if d.split(':')[1] == "+1":
+        priority = 3
+      elif d.split(':')[1] == "0":
+        priority = 2
+      elif d.split(':')[1] == "-1":
+        priority = 1
   
   final = {
     "lat": lat,
@@ -62,7 +70,8 @@ def parser(filtered):
     "schengen": schengen,
     "companies": companies,
     "usage": usage,
-    "wtc": wtc
+    "wtc": wtc,
+    "priority": priority
   }
   return final
 
